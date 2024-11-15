@@ -406,6 +406,10 @@ local function external(self, major, instance)
 		self:RegisterEvent("UNIT_AURA")
 		self:RegisterEvent("UNIT_HEALTH")
 		self:RegisterEvent("PLAYER_LOGIN")
+		
+		--trying to fix the sometimes nt properly cleared incoming heals
+		--self:RegisterEvent("PLAYER_LEAVE_COMBAT")
+		
 		self:TriggerEvent("HealComm_Enabled")
 	end
 	if major == "AceHook-2.1" then
@@ -413,6 +417,11 @@ local function external(self, major, instance)
 		AceHook:embed(self)
 	end
 end
+
+--clear out all incoming heal at combat end to fix rare stuck incoming heal bug
+--function HealComm:PLAYER_LEAVE_COMBAT()
+--	self:CancelAllScheduledEvents()
+--end
 
 function HealComm:PLAYER_LOGIN()
 	self:HookScript(WorldFrame, "OnMouseDown", "OnMouseDown")
@@ -445,48 +454,69 @@ end
 HealComm.Spells = {
 	[L["Holy Light"]] = {
 		[1] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
-			return (44*hlMod+(((2.5/3.5) * SpellPower)*0.1))
+			--return (44*hlMod+(((2.5/3.5) * SpellPower)*0.1)) --custom_turtle_begin
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
+			return (44*hlMod+(((2.5/3.5) * SpellPower)))
 		end;
 		[2] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
-			return (88*hlMod+(((2.5/3.5) * SpellPower)*0.224))
+			--return (88*hlMod+(((2.5/3.5) * SpellPower)*0.224)) --custom_turtle_begin
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
+			return (88*hlMod+(((2.5/3.5) * SpellPower)))
 		end;
 		[3] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
-			return (174*hlMod+(((2.5/3.5) * SpellPower)*0.476))
+			--return (174*hlMod+(((2.5/3.5) * SpellPower)*0.476)) --custom_turtle_begin
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
+			return (174*hlMod+(((2.5/3.5) * SpellPower)))
 		end;
 		[4] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
 			return (334*hlMod+((2.5/3.5) * SpellPower))
 		end;
 		[5] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
 			return (522*hlMod+((2.5/3.5) * SpellPower))
 		end;
 		[6] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
 			return (740*hlMod+((2.5/3.5) * SpellPower))
 		end;
 		[7] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
 			return (1000*hlMod+((2.5/3.5) * SpellPower))
 		end;
 		[8] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
 			return (1318*hlMod+((2.5/3.5) * SpellPower))
 		end;
 		[9] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
 			return (1681*hlMod+((2.5/3.5) * SpellPower))
 		end;
 	};
@@ -497,13 +527,16 @@ HealComm.Spells = {
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
 				if name == 	L["Libram of Divinity"] then
-					lp = 53
+					lp = 28
 				elseif name == L["Libram of Light"] then
-					lp = 83
+					lp = 41
 				end
+				lp = lp + itemBonus:GetBonus("IMPFLASHOFLIGHT") --for new twow t3 set bonus
 			end
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
 			return (68*hlMod+lp+((1.5/3.5) * SpellPower))
 		end;
 		[2] = function (SpellPower)
@@ -512,13 +545,16 @@ HealComm.Spells = {
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
 				if name == 	L["Libram of Divinity"] then
-					lp = 53
+					lp = 28
 				elseif name == L["Libram of Light"] then
-					lp = 83
+					lp = 41
 				end
+				lp = lp + itemBonus:GetBonus("IMPFLASHOFLIGHT") --for new twow t3 set bonus
 			end
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
 			return (104*hlMod+lp+((1.5/3.5) * SpellPower))
 		end;
 		[3] = function (SpellPower)
@@ -527,13 +563,16 @@ HealComm.Spells = {
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
 				if name == 	L["Libram of Divinity"] then
-					lp = 53
+					lp = 28
 				elseif name == L["Libram of Light"] then
-					lp = 83
+					lp = 41
 				end
+				lp = lp + itemBonus:GetBonus("IMPFLASHOFLIGHT") --for new twow t3 set bonus
 			end
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
 			return (155*hlMod+lp+((1.5/3.5) * SpellPower))
 		end;
 		[4] = function (SpellPower)
@@ -542,13 +581,16 @@ HealComm.Spells = {
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
 				if name == 	L["Libram of Divinity"] then
-					lp = 53
+					lp = 28
 				elseif name == L["Libram of Light"] then
-					lp = 83
+					lp = 41
 				end
+				lp = lp + itemBonus:GetBonus("IMPFLASHOFLIGHT") --for new twow t3 set bonus
 			end
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
 			return (210*hlMod+lp+((1.5/3.5) * SpellPower))
 		end;
 		[5] = function (SpellPower)
@@ -557,13 +599,16 @@ HealComm.Spells = {
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
 				if name == 	L["Libram of Divinity"] then
-					lp = 53
+					lp = 28
 				elseif name == L["Libram of Light"] then
-					lp = 83
+					lp = 41
 				end
+				lp = lp + itemBonus:GetBonus("IMPFLASHOFLIGHT") --for new twow t3 set bonus
 			end
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
 			return (284*hlMod+lp+((1.5/3.5) * SpellPower))
 		end;
 		[6] = function (SpellPower)
@@ -572,13 +617,16 @@ HealComm.Spells = {
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
 				if name == 	L["Libram of Divinity"] then
-					lp = 53
+					lp = 28
 				elseif name == L["Libram of Light"] then
-					lp = 83
+					lp = 41
 				end
+				lp = lp + itemBonus:GetBonus("IMPFLASHOFLIGHT") --for new twow t3 set bonus
 			end
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
 			return (364*hlMod+lp+((1.5/3.5) * SpellPower))
 		end;
 		[7] = function (SpellPower)
@@ -587,66 +635,49 @@ HealComm.Spells = {
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
 				if name == 	L["Libram of Divinity"] then
-					lp = 53
+					lp = 28
 				elseif name == L["Libram of Light"] then
-					lp = 83
+					lp = 41
 				end
+				lp = lp + itemBonus:GetBonus("IMPFLASHOFLIGHT") --for new twow t3 set bonus
 			end
-			local _,_,_,_,talentRank,_ = GetTalentInfo(1,5)
+			local _,_,_,_,talentRank,_ = GetTalentInfo(1,6)
 			local hlMod = 4*talentRank/100 + 1
-			return (481*hlMod+lp+((1.5/3.5) * SpellPower))
+			_,_,_,_,talentRank,_ = GetTalentInfo(1,12);
+			SpellPower = SpellPower + UnitArmor("player") *talentRank/100;
+			return (451*hlMod+lp+((1.5/3.5) * SpellPower))
 		end;
 	};
 	[L["Healing Wave"]] = {
 		[1] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (40*pMod+(((1.5/3.5) * SpellPower)*0.22))
+			return (40+(((1.5/3.5) * SpellPower)*0.2875))
 		end;
 		[2] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (72*pMod+(((2/3.5) * SpellPower)*0.38))
+			return (72+(((2/3.5) * SpellPower)*0.475))
 		end;
 		[3] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (143*pMod+(((2.5/3.5) * SpellPower)*0.446))
+			return (143+(((2.5/3.5) * SpellPower)*0.7))
 		end;
 		[4] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (293*pMod+(((3/3.5) * SpellPower)*0.7))
+			return (293+(((3/3.5) * SpellPower)*0.925))
 		end;
 		[5] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (409*pMod+((3/3.5) * SpellPower))
+			return (409+((3/3.5) * SpellPower))
 		end;
 		[6] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (580*pMod+((3/3.5) * SpellPower))
+			return (580+((3/3.5) * SpellPower))
 		end;
 		[7] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (798*pMod+((3/3.5) * SpellPower))
+			return (798+((3/3.5) * SpellPower))
 		end;
 		[8] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (1093*pMod+((3/3.5) * SpellPower))
+			return (1093+((3/3.5) * SpellPower))
 		end;
 		[9] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (1465*pMod+((3/3.5) * SpellPower))
+			return (1465+((3/3.5) * SpellPower))
 		end;
 		[10] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (1736*pMod+((3/3.5) * SpellPower))
+			return (1736+((3/3.5) * SpellPower))
 		end;
 	};
 	[L["Lesser Healing Wave"]] = {
@@ -656,14 +687,12 @@ HealComm.Spells = {
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
 				if name == L["Totem of Sustaining"] then
-					tp = 53
+					tp = 28
 				elseif name == L["Totem of Life"] then
-					tp = 80
+					tp = 40
 				end
 			end
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (175*pMod+tp+((1.5/3.5) * SpellPower))
+			return (175+tp+((1.5/3.5) * SpellPower))
 		end;
 		[2] = function (SpellPower)
 			local tp = 0
@@ -671,14 +700,12 @@ HealComm.Spells = {
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
 				if name == L["Totem of Sustaining"] then
-					tp = 53
+					tp = 28
 				elseif name == L["Totem of Life"] then
-					tp = 80
+					tp = 40
 				end
 			end
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (265*pMod+tp+((1.5/3.5) * SpellPower))
+			return (265+tp+((1.5/3.5) * SpellPower))
 		end;
 		[3] = function (SpellPower)
 			local tp = 0
@@ -686,14 +713,12 @@ HealComm.Spells = {
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
 				if name == L["Totem of Sustaining"] then
-					tp = 53
+					tp = 28
 				elseif name == L["Totem of Life"] then
-					tp = 80
+					tp = 40
 				end
 			end
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (360*pMod+tp+((1.5/3.5) * SpellPower))
+			return (360+tp+((1.5/3.5) * SpellPower))
 		end;
 		[4] = function (SpellPower)
 			local tp = 0
@@ -701,14 +726,12 @@ HealComm.Spells = {
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
 				if name == L["Totem of Sustaining"] then
-					tp = 53
+					tp = 28
 				elseif name == L["Totem of Life"] then
-					tp = 80
+					tp = 40
 				end
 			end
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (487*pMod+tp+((1.5/3.5) * SpellPower))
+			return (487+tp+((1.5/3.5) * SpellPower))
 		end;
 		[5] = function (SpellPower)
 			local tp = 0
@@ -716,14 +739,12 @@ HealComm.Spells = {
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
 				if name == L["Totem of Sustaining"] then
-					tp = 53
+					tp = 28
 				elseif name == L["Totem of Life"] then
-					tp = 80
+					tp = 40
 				end
 			end
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (669*pMod+tp+((1.5/3.5) * SpellPower))
+			return (669+tp+((1.5/3.5) * SpellPower))
 		end;
 		[6] = function (SpellPower)
 			local tp = 0
@@ -731,31 +752,23 @@ HealComm.Spells = {
 				local _,_,itemstring = string.find(GetInventoryItemLink("player",GetInventorySlotInfo("RangedSlot")), "|H(.+)|h")
 				local name = GetItemInfo(itemstring)
 				if name == L["Totem of Sustaining"] then
-					tp = 53
+					tp = 28
 				elseif name == L["Totem of Life"] then
-					tp = 80
+					tp = 40
 				end
 			end
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (881*pMod+tp+((1.5/3.5) * SpellPower))
+			return (881+tp+((1.5/3.5) * SpellPower))
 		end;
 	};
 	[L["Chain Heal"]] = {
 		[1] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (344*pMod+((2.5/3.5) * SpellPower))
+			return (344+((2.5/3.5) * SpellPower))
 		end;
 		[2] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (435*pMod+((2.5/3.5) * SpellPower))
+			return (435+((2.5/3.5) * SpellPower))
 		end;
 		[3] = function (SpellPower)
-			local _,_,_,_,talentRank,_ = GetTalentInfo(3,14)
-			local pMod = 2*talentRank/100 + 1
-			return (591*pMod+((2.5/3.5) * SpellPower))
+			return (591+((2.5/3.5) * SpellPower))
 		end;
 	};
 	[L["Lesser Heal"]] = {
@@ -1101,8 +1114,8 @@ local healcommTip = CreateFrame("GameTooltip", "healcommTip", nil, "GameTooltipT
 healcommTip:SetOwner(WorldFrame, "ANCHOR_NONE")
 
 HealComm.Buffs = {
-	[L["Power Infusion"]] = {amount = 0, mod = 0.2, icon = "Interface\\Icons\\Spell_Holy_PowerInfusion"};
-	[L["Divine Favor"]] = {amount = 0, mod = 0.5, icon = "Interface\\Icons\\Spell_Holy_Heal"};
+	--[L["Power Infusion"]] = {amount = 0, mod = 0.2, icon = "Interface\\Icons\\Spell_Holy_PowerInfusion"}; deleted on twow
+	--[L["Divine Favor"]] = {amount = 0, mod = 0.5, icon = "Interface\\Icons\\Spell_Holy_Heal"}; deleted on twow
 	[L["Nature Aligned"]] = {amount = 0, mod = 0.2, icon = "Interface\\Icons\\Spell_Nature_SpiritArmor"};
 	[L["Crusader's Wrath"]] = {amount = 95, mod = 0, icon = "Interface\\Icons\\Spell_Nature_GroundingTotem"};
 	[L["The Furious Storm"]] = {amount = 95, mod = 0, icon = "Interface\\Icons\\Spell_Nature_CallStorm"};
@@ -1184,13 +1197,14 @@ function HealComm:GetUnitSpellPower(unit, spell)
 		if buffName == L["Blessing of Light"] then
 			local HLBonus, FoLBonus = strmatch(healcommTipTextLeft2:GetText(),"(%d+).-(%d+)")
 			if (spell == L["Flash of Light"]) then
-				targetpower = FoLBonus + targetpower
+				targetpower = FoLBonus *1.5/3.5 + targetpower
 			elseif spell == L["Holy Light"] then
-				targetpower = HLBonus + targetpower
+				targetpower = (HLBonus+FoLBonus) *2.5/3.5 + targetpower
 			end
-		end
-		if buffName == L["Healing Way"] and spell == L["Healing Wave"] then
+		elseif buffName == L["Healing Way"] and ( spell == L["Healing Wave"] or spell == L["Chain Heal"]) then
 			targetmod = targetmod * ((buffApplications * 0.06) + 1)
+		elseif buffName == "Daybreak" and (spell == L["Holy Light"] or spell == L["Flash of Light"])then
+			targetmod = targetmod * (1.2)
 		end
 	end
 	for i=1, 16 do
@@ -1327,6 +1341,7 @@ function HealComm:SPELLCAST_START()
 		local targetpower, targetmod = self.SpellCastInfo[4], self.SpellCastInfo[5]
 		local Bonus = Bonus + buffpower
 		local amount = ((math.floor(self.Spells[self.SpellCastInfo[1]][tonumber(self.SpellCastInfo[2])](Bonus))+targetpower)*buffmod*targetmod)
+		print("HealComm predicts: "..amount.." Crit: "..1.5*amount)
 		if arg1 == L["Prayer of Healing"] then
 			local targets = {UnitName("player")}
 			local targetsstring = UnitName("player").."/"
