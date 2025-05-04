@@ -1341,7 +1341,7 @@ function HealComm:SPELLCAST_START()
 		local targetpower, targetmod = self.SpellCastInfo[4], self.SpellCastInfo[5]
 		local Bonus = Bonus + buffpower
 		local amount = ((math.floor(self.Spells[self.SpellCastInfo[1]][tonumber(self.SpellCastInfo[2])](Bonus))+targetpower)*buffmod*targetmod)
-		print("HealComm predicts: "..amount.." Crit: "..1.5*amount)
+--		print("HealComm predicts: "..amount.." Crit: "..1.5*amount)
 		if arg1 == L["Prayer of Healing"] then
 			local targets = {UnitName("player")}
 			local targetsstring = UnitName("player").."/"
